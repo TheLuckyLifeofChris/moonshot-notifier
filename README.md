@@ -77,3 +77,13 @@ SLACK_WEBHOOK_URL=your_webhook_url
 📜 License
 
 This project is licensed under the MIT License.
+
+⸻
+
+> ⚠️ Note: All variable names and comments in the code are written in German.  
+> If you plan to contribute or adapt this project for broader use, consider translating it to English for consistency.
+
+> 💡 Hinweis: Der Code (Kommentare & Variablennamen) ist aktuell auf Deutsch.  
+> Bei einer Weiterverwendung oder Veröffentlichung sollte eine englische Übersetzung erfolgen.
+
+
