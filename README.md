@@ -1,45 +1,79 @@
-# Moonshot-Notifier
+# moonshot_notifier
 
-![MIT License](https://img.shields.io/badge/license-MIT-green.svg)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Ein automatisierter Aktien-Screener, der täglich bis zu drei spekulative US-Aktien per Slack empfiehlt – basierend auf 7 klaren Kriterien.
+## Overview
 
+`moonshot_notifier` is an automated daily Slack notifier that uses ChatGPT to identify up to three potential **moonshot stock candidates** under $20 USD, based on strict criteria. The notifier runs every weekday at 10:00 (CET) via GitHub Actions and sends the recommendations to a specified Slack channel.
 
-
-
-# 🌙 Moonshot-Notifier
-
-Der **Moonshot Notifier** ist ein automatisierter GitHub Actions Workflow, der werktags um 10:00 Uhr (UTC) ausgeführt wird. Er generiert mithilfe von ChatGPT täglich bis zu drei spekulative Aktienempfehlungen und sendet sie direkt an einen definierten Slack-Channel.
+It is designed for manual trading using brokers like Trade Republic.
 
 ---
 
-## 🚀 Features
+## 🔍 Strategy & Criteria
 
-- ⏰ Automatisierter Cron-Job: Montag bis Freitag um 10:00 Uhr (UTC)
-- 🧠 Nutzung von GPT-4o zur Generierung von Aktienempfehlungen
-- 💬 Direkte Slack-Benachrichtigung über Webhook
-- 🧾 Strikter Kriterienkatalog für Empfehlungen (Preis, News, Momentum, Social Media etc.)
+Every weekday, the notifier asks ChatGPT (GPT-4o) to select **up to 3 stocks** that fulfill all **7 strict criteria**:
+
+1. **Price under $20** (ideally $2–$15)
+2. **Technical Buy Signal** (e.g., EMA crossover, breakout, unusual volume)
+3. **Positive News** within the **last 7 days**
+4. **Analyst Buy Ratings** or upgrades within the **last 5 trading days**
+5. **Reddit or Social Media Hype** within the **last 48 hours**
+6. **Speculative Momentum** in the **last 3 days**
+7. **Relevance to a trending theme**:
+   - Artificial Intelligence (AI)
+   - Quantum Computing
+   - Biotechnology
+   - Cybersecurity
+   - Renewable Energy
+   - Space / Satellite
+   - Fintech
+
+⚠️ **If no stock meets all 7 conditions**, the bot **does not send a recommendation**.
 
 ---
 
-## 📦 Setup
+## 💬 Example Output
 
-### 1. 🔑 GitHub Secrets
+```markdown
+📅 *Created on 18 June 2025 – 10:00*
 
-Folgende Secrets müssen in den Repository-Einstellungen gesetzt werden:
+🔹 **Stock Name (TICKER)**
+💵 Last price: $4.67  
+🎯 Entry: up to $5.20  
+📊 Reason: EMA crossover, +350% volume, news from June 16 (new contract), Buy rating from JP Morgan, strong Reddit activity, biotech-related  
+🧭 Action: Watch for breakout above $5.20. 🟩 Strong Setup – exceptional data
 
-| Secret Name        | Beschreibung                                 |
-|--------------------|----------------------------------------------|
-| `OPENAI_API_KEY`   | Dein OpenAI API Key                          |
-| `SLACK_WEBHOOK_URL`| Webhook-URL des Ziel-Slack-Channels          |
 
-> ⚙️ → Repository → Settings → Secrets → Actions → `New repository secret`
+⸻
 
----
+⚙️ Tech Stack
+	•	GitHub Actions with CRON scheduler (Mon–Fri, 10:00 CET)
+	•	ChatGPT-4o for generating the output
+	•	Slack Webhook for sending the message
 
-### 2. 🔁 Automatisierung via GitHub Actions
+⸻
 
-Der Workflow liegt unter:
+🔐 Secrets (required in GitHub repo settings)
+	•	OPENAI_API_KEY – your OpenAI API key
+	•	SLACK_WEBHOOK_URL – your Slack Incoming Webhook URL
 
-```bash
-.github/workflows/moonshot-notifier.yml
+⸻
+
+🧪 Local Development
+
+To run the script locally:
+
+python3 notifier.py
+
+Make sure you have a .env file in your root directory with:
+
+OPENAI_API_KEY=your_openai_key
+SLACK_WEBHOOK_URL=your_webhook_url
+
+
+⸻
+
+📜 License
+
+This project is licensed under the MIT License.
