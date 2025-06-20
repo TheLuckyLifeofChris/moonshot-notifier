@@ -1,4 +1,13 @@
-# 🌙 Moonshot Notifier
+# Moonshot-Notifier
+
+![MIT License](https://img.shields.io/badge/license-MIT-green.svg)
+
+Ein automatisierter Aktien-Screener, der täglich bis zu drei spekulative US-Aktien per Slack empfiehlt – basierend auf 7 klaren Kriterien.
+
+
+
+
+# 🌙 Moonshot-Notifier
 
 Der **Moonshot Notifier** ist ein automatisierter GitHub Actions Workflow, der werktags um 10:00 Uhr (UTC) ausgeführt wird. Er generiert mithilfe von ChatGPT täglich bis zu drei spekulative Aktienempfehlungen und sendet sie direkt an einen definierten Slack-Channel.
 
