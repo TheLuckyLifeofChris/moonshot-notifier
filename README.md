@@ -1,27 +1,36 @@
-# moonshot_notifier
+# 🌙 Moonshot Notifier
 
-Täglicher Versand von ChatGPT-generierten Aktien-Empfehlungen an Slack.
+Der **Moonshot Notifier** ist ein automatisierter GitHub Actions Workflow, der werktags um 10:00 Uhr (UTC) ausgeführt wird. Er generiert mithilfe von ChatGPT täglich bis zu drei spekulative Aktienempfehlungen und sendet sie direkt an einen definierten Slack-Channel.
 
-## Setup
+---
 
-1. Python 3 installieren
-2. Repository klonen
-3. `.env` Datei mit OpenAI- und Slack-Webhook-Token anlegen (siehe `.env` Beispiel)
-4. Abhängigkeiten installieren:
-   ```bash
-   pip install -r requirements.txt
-   ```
-5. Skript testen:
-   ```bash
-   python moonshot_daily.py
-   ```
+## 🚀 Features
 
-## Automatisierung (Cronjob)
+- ⏰ Automatisierter Cron-Job: Montag bis Freitag um 10:00 Uhr (UTC)
+- 🧠 Nutzung von GPT-4o zur Generierung von Aktienempfehlungen
+- 💬 Direkte Slack-Benachrichtigung über Webhook
+- 🧾 Strikter Kriterienkatalog für Empfehlungen (Preis, News, Momentum, Social Media etc.)
 
-Füge folgenden Eintrag zu deinem Crontab hinzu, um das Skript täglich um 09:00 Uhr auszuführen:
+---
 
-```
-0 9 * * * /usr/bin/python3 /path/to/moonshot_notifier/moonshot_daily.py >> /var/log/moonshot.log 2>&1
-```
+## 📦 Setup
 
-Passe `/path/to/moonshot_notifier/` ggf. an deinen Installationspfad an. 
+### 1. 🔑 GitHub Secrets
+
+Folgende Secrets müssen in den Repository-Einstellungen gesetzt werden:
+
+| Secret Name        | Beschreibung                                 |
+|--------------------|----------------------------------------------|
+| `OPENAI_API_KEY`   | Dein OpenAI API Key                          |
+| `SLACK_WEBHOOK_URL`| Webhook-URL des Ziel-Slack-Channels          |
+
+> ⚙️ → Repository → Settings → Secrets → Actions → `New repository secret`
+
+---
+
+### 2. 🔁 Automatisierung via GitHub Actions
+
+Der Workflow liegt unter:
+
+```bash
+.github/workflows/moonshot-notifier.yml
