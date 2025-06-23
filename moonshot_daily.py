@@ -3,6 +3,7 @@ import datetime
 import requests
 from dotenv import load_dotenv
 import openai
+from typing import List, Dict, Optional
 
 # .env laden
 load_dotenv()
@@ -104,6 +105,62 @@ def send_to_slack(message):
         print(f"Fehler beim Senden an Slack: {e}")
         return False
     return True
+
+def generate_moonshot_slack_message(moonshots: List[Dict]) -> str:
+    """
+    Erzeugt eine Slack-kompatible Nachricht für eine Liste von Moonshot-Aktien.
+    """
+    now = datetime.datetime.now().strftime('%d.%m.%Y – %H:%M')
+    if not moonshots:
+        return f"""
+📅 *Erstellt am {now}*
+
+🚀 *Heute wurden keine potenziellen Moonshots identifiziert.*
+"""
+    
+    message = f"""
+📅 *Erstellt am {now}*
+
+🚀 *Heute identifizierte potenzielle Moonshots:*
+
+---
+"""
+    for ms in moonshots:
+        name = ms.get('name', '-')
+        ticker = ms.get('ticker', '-')
+        last_price = ms.get('last_price', '-')
+        entry_price = ms.get('entry_price', '-')
+        fulfilled = ms.get('fulfilled_criteria', [])
+        unfulfilled = ms.get('unfulfilled_criteria', [])
+        trend = ms.get('trend_theme', None)
+        recommendation = ms.get('recommendation', '-')
+        finviz_url = f"https://finviz.com/quote.ashx?t={ticker.upper()}"
+
+        # Kriterien-Formatierung
+        criteria_lines = ''
+        for crit in fulfilled:
+            criteria_lines += f"✅ {crit}\n"
+        for crit in unfulfilled:
+            criteria_lines += f"❌ {crit}\n"
+        if trend:
+            criteria_lines += f"✅ Relevanz zu Trendthema: {trend}\n"
+
+        # Warnhinweis, falls nicht alle Kriterien erfüllt
+        warn = ''
+        if unfulfilled:
+            warn = '\n🟨 *Achtung: Nicht alle Kriterien erfüllt – erhöhte Unsicherheit.*'
+
+        message += (
+            f"\n🔹 **{name} ({ticker})**  "
+            f"\n💵 **Letzter Kurs:** {last_price:,.2f} USD  "
+            f"\n🎯 **Einstieg bis max.:** {entry_price:,.2f} USD  "
+            f"\n🔗 [Finviz öffnen]({finviz_url})\n"
+            f"\n{criteria_lines}"
+            f"\n🧭 **Handlungsempfehlung:**  "
+            f"\n{recommendation}"
+            f"{warn}\n\n---\n"
+        )
+    return message.strip()
 
 def main():
     print(f"[INFO] Starte Moonshot-Notifier am {datetime.datetime.now().isoformat()}")
