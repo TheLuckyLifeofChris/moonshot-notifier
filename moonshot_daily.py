@@ -3,7 +3,6 @@ import datetime
 import requests
 from dotenv import load_dotenv
 import openai
-from typing import List, Dict, Optional
 
 # .env laden
 load_dotenv()
@@ -17,47 +16,34 @@ openai.api_key = OPENAI_API_KEY
 
 def get_moonshot_recommendation():
     prompt = f"""
-Heute ist der {datetime.datetime.now().strftime('%d. %B %Y')}. Gib mir ausschließlich aktuelle Empfehlungen basierend auf diesem Datum.
+Heute ist der {datetime.datetime.now().strftime('%d. %B %Y')}. Gib mir eine fiktive, aber realistische tägliche Übersicht über maximal drei spekulative US-Aktien unter 20 USD mit starkem Momentum, die gut zu einer Moonshot-Strategie passen könnten.
 
-Du bist ein spezialisierter Börsen-Analyst mit Fokus auf spekulative Small- und Micro-Cap-Aktien unter 20 USD. Deine Aufgabe ist es, täglich bis zu drei potenzielle Moonshot-Aktien zu identifizieren, die heute interessant für manuelles Trading über Trade Republic sein könnten.
+Simuliere aktuelle Nachrichten, Kursmuster und Stimmungen so, wie ein Börsenanalyst es typischerweise einschätzen würde. Verwende reale Ticker und plausible Kursangaben. Hinweis: Diese Daten sind hypothetisch und dienen als Inspiration zur manuellen Analyse durch den Nutzer.
 
-Nutze ausschließlich öffentlich verfügbare, belegbare Informationen – keine Annahmen, keine Spekulation. Verwende ausschließlich das heutige Datum als Grundlage für alle Informationen – egal ob Charttechnik, Nachrichten oder Volumen.
-
-🔎 Gib **nur Aktien aus**, bei denen mindestens **4 der folgenden 5 Hauptkriterien erfüllt** sind. Zusätzlich sollten **möglichst viele der Bonuskriterien** erfüllt sein.
+🔎 Gib **nur Aktien aus**, bei denen mindestens **4 der folgenden 5 Hauptkriterien erfüllt** sind. Zusätzlich sollten möglichst viele Bonuskriterien erfüllt sein.
 
 ### Hauptkriterien (mind. 4 erforderlich):
 1. Preis unter 20 USD (optimal: 2–15 USD)  
-2. Technisches Kaufsignal (z. B. EMA-Crossover, Breakout, starkes Volumen)  
-3. Positiver Social Media/Reddit-Hype (innerhalb der letzten 48 h)  
-4. Spekulatives Momentum (innerhalb der letzten 3 Tage)  
-5. Relevanz zu einem der folgenden Trendthemen:  
-– Künstliche Intelligenz (AI)  
-– Quantencomputing  
-– Biotechnologie  
-– Cybersecurity  
-– Erneuerbare Energien  
-– Raumfahrt / Satellitentechnik  
-– Fintech
+2. Technisches Kaufsignal (EMA-Crossover, Breakout, starkes Volumen)  
+3. Positiver Social Media/Reddit-Hype (letzte 48 h)  
+4. Spekulatives Momentum (letzte 3 Tage)  
+5. Relevanz zu einem Trendthema: AI, Quantencomputing, Biotech, Cybersecurity, Erneuerbare Energien, Raumfahrt, Fintech
 
 ### Bonuskriterien:
-6. Positive Nachrichten in den letzten 7 Tagen  
-7. Analysten-Empfehlung oder Kursziel-Anhebung in den letzten 5 Handelstagen
+6. Positive Nachrichten (letzte 7 Tage)  
+7. Analysten-Empfehlung oder Kursziel-Anhebung (letzte 5 Handelstage)
 
-📊 Gib maximal drei Aktien aus, die diese Kriterien möglichst gut erfüllen. Auch wenn nicht alle erfüllt sind, nenne den Titel **sofern mindestens 4 Hauptkriterien erfüllt sind**, und liste transparent auf, **welche erfüllt** und **welche nicht erfüllt** wurden.
-
-⚠️ Falls keine Aktie diese Mindestkriterien erfüllt, gib bitte eine kurze Übersicht, woran es heute gescheitert ist.
+⚠️ Falls keine Aktie diese Kriterien erfüllt, gib eine kurze Begründung.
 
 ---
 
-### 📤 Ausgabeformat (Slack-kompatibel, mit Finviz-Link & Buy-Button):
+### 📤 Ausgabeformat (Slack-kompatibel):
 
 🗓 *Erstellt am {datetime.datetime.now().strftime('%d.%m.%Y – %H:%M')}*
 
 🚀 *Heute identifizierte potenzielle Moonshots:*
 
 Für jede Aktie:
-
----
 
 🔹 **Name + Ticker**  
 🔗 [Finviz öffnen](https://finviz.com/quote.ashx?t=TICKER)  
@@ -71,11 +57,10 @@ Für jede Aktie:
 ✅ Relevanz zu Trendthema: AI  
 
 ❌ **Nicht erfüllt:**  
-– Keine Nachrichten in den letzten 7 Tagen  
 – Keine Analysten-Empfehlung
 
-🧱 **Handlungsempfehlung:**  
-> Beobachten oder bei Pullback einsteigen. Volumen und Hype sprechen für kurzfristiges Momentum.
+🧭 **Handlungsempfehlung:**  
+> Beobachten oder bei Pullback einsteigen.
 
 🟩 *Klick hier, um automatisch über deinen Trading-Bot zu kaufen:*  
 ```json
@@ -86,7 +71,6 @@ Für jede Aktie:
   "timeframe": "1D",
   "note": "🚀 SmartEntry aktiviert: Trade für TICKER bei letztem Schlusskurs via Slack-Buy-Button."
 }}
-```
 """
     try:
         response = openai.chat.completions.create(
