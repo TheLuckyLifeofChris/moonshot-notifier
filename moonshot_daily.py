@@ -16,7 +16,7 @@ if not OPENAI_API_KEY or not SLACK_WEBHOOK_URL:
 openai.api_key = OPENAI_API_KEY
 
 def get_moonshot_recommendation():
-    prompt = f"""
+    prompt = fprompt = f"""
 Heute ist der {datetime.datetime.now().strftime('%d. %B %Y')}. Gib mir ausschließlich aktuelle Empfehlungen basierend auf diesem Datum.
 
 Du bist ein spezialisierter Börsen-Analyst mit Fokus auf spekulative Small- und Micro-Cap-Aktien unter 20 USD. Deine Aufgabe ist es, täglich bis zu drei potenzielle Moonshot-Aktien zu identifizieren, die heute interessant für manuelles Trading über Trade Republic sein könnten.
@@ -60,6 +60,7 @@ Für jede Aktie:
 ---
 
 🔹 **Name + Ticker**  
+🔗 [Finviz öffnen](https://finviz.com/quote.ashx?t=TICKER) ← Bitte ersetze TICKER automatisch durch den tatsächlichen Ticker der Aktie  
 💵 **Letzter Kurs:** XX,XX USD  
 🎯 **Einstieg bis max.:** XX,XX USD  
 
