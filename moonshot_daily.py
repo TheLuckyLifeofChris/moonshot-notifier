@@ -16,7 +16,7 @@ if not OPENAI_API_KEY or not SLACK_WEBHOOK_URL:
 openai.api_key = OPENAI_API_KEY
 
 def get_moonshot_recommendation():
- prompt = f"""
+    prompt = f"""
 Heute ist der {datetime.datetime.now().strftime('%d. %B %Y')}. Gib mir ausschließlich aktuelle Empfehlungen basierend auf diesem Datum.
 
 Du bist ein spezialisierter Börsen-Analyst mit Fokus auf spekulative Small- und Micro-Cap-Aktien unter 20 USD. Deine Aufgabe ist es, täglich bis zu drei potenzielle Moonshot-Aktien zu identifizieren, die heute interessant für manuelles Trading über Trade Republic sein könnten.
@@ -83,97 +83,10 @@ Für jede Aktie:
 ➡️ Sende per POST folgende JSON an die URL:
 
 ```json
-{
+{{
   "symbol": "TICKER",
   "action": "buy",
   "strategy": "smartentry",
   "timeframe": "1D",
   "note": "🚀 SmartEntry aktiviert: Trade für TICKER bei letztem Schlusskurs via Slack-Buy-Button."
-}"""
-    try:
-        response = openai.chat.completions.create(
-            model="gpt-4o",
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=900,
-            temperature=0.7,
-        )
-        return response.choices[0].message.content.strip()
-    except Exception as e:
-        return f"Fehler beim Abrufen der Empfehlung: {e}"
-
-def send_to_slack(message):
-    payload = {"text": message}
-    try:
-        resp = requests.post(SLACK_WEBHOOK_URL, json=payload, timeout=10)
-        resp.raise_for_status()
-    except Exception as e:
-        print(f"Fehler beim Senden an Slack: {e}")
-        return False
-    return True
-
-def generate_moonshot_slack_message(moonshots: List[Dict]) -> str:
-    """
-    Erzeugt eine Slack-kompatible Nachricht für eine Liste von Moonshot-Aktien.
-    """
-    now = datetime.datetime.now().strftime('%d.%m.%Y – %H:%M')
-    if not moonshots:
-        return f"""
-📅 *Erstellt am {now}*
-
-🚀 *Heute wurden keine potenziellen Moonshots identifiziert.*
-"""
-    
-    message = f"""
-📅 *Erstellt am {now}*
-
-🚀 *Heute identifizierte potenzielle Moonshots:*
-
----
-"""
-    for ms in moonshots:
-        name = ms.get('name', '-')
-        ticker = ms.get('ticker', '-')
-        last_price = ms.get('last_price', '-')
-        entry_price = ms.get('entry_price', '-')
-        fulfilled = ms.get('fulfilled_criteria', [])
-        unfulfilled = ms.get('unfulfilled_criteria', [])
-        trend = ms.get('trend_theme', None)
-        recommendation = ms.get('recommendation', '-')
-        finviz_url = f"https://finviz.com/quote.ashx?t={ticker.upper()}"
-
-        # Kriterien-Formatierung
-        criteria_lines = ''
-        for crit in fulfilled:
-            criteria_lines += f"✅ {crit}\n"
-        for crit in unfulfilled:
-            criteria_lines += f"❌ {crit}\n"
-        if trend:
-            criteria_lines += f"✅ Relevanz zu Trendthema: {trend}\n"
-
-        # Warnhinweis, falls nicht alle Kriterien erfüllt
-        warn = ''
-        if unfulfilled:
-            warn = '\n🟨 *Achtung: Nicht alle Kriterien erfüllt – erhöhte Unsicherheit.*'
-
-        message += (
-            f"\n🔹 **{name} ({ticker})**  "
-            f"\n💵 **Letzter Kurs:** {last_price:,.2f} USD  "
-            f"\n🎯 **Einstieg bis max.:** {entry_price:,.2f} USD  "
-            f"\n🔗 [Finviz öffnen]({finviz_url})\n"
-            f"{criteria_lines}"
-            f"\n🧭 **Handlungsempfehlung:**  "
-            f"\n{recommendation}"
-            f"{warn}\n\n---\n"
-        )
-    return message.strip()
-
-def main():
-    print(f"[INFO] Starte Moonshot-Notifier am {datetime.datetime.now().isoformat()}")
-    recommendation = get_moonshot_recommendation()
-    if send_to_slack(recommendation):
-        print("[INFO] Empfehlung erfolgreich an Slack gesendet.")
-    else:
-        print("[ERROR] Fehler beim Senden an Slack.")
-
-if __name__ == "__main__":
-    main() 
+}}
