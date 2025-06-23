@@ -16,7 +16,7 @@ if not OPENAI_API_KEY or not SLACK_WEBHOOK_URL:
 openai.api_key = OPENAI_API_KEY
 
 def get_moonshot_recommendation():
-    prompt = fprompt = f"""
+ prompt = f"""
 Heute ist der {datetime.datetime.now().strftime('%d. %B %Y')}. Gib mir ausschließlich aktuelle Empfehlungen basierend auf diesem Datum.
 
 Du bist ein spezialisierter Börsen-Analyst mit Fokus auf spekulative Small- und Micro-Cap-Aktien unter 20 USD. Deine Aufgabe ist es, täglich bis zu drei potenzielle Moonshot-Aktien zu identifizieren, die heute interessant für manuelles Trading über Trade Republic sein könnten.
@@ -49,7 +49,7 @@ Nutze ausschließlich öffentlich verfügbare, belegbare Informationen – keine
 
 ---
 
-### 📤 Ausgabeformat (Slack-kompatibel):
+### 📤 Ausgabeformat (Slack-kompatibel, mit Finviz-Link & Buy-Button):
 
 📅 *Erstellt am {datetime.datetime.now().strftime('%d.%m.%Y – %H:%M')}*
 
@@ -60,7 +60,7 @@ Für jede Aktie:
 ---
 
 🔹 **Name + Ticker**  
-🔗 [Finviz öffnen](https://finviz.com/quote.ashx?t=TICKER) ← Bitte ersetze TICKER automatisch durch den tatsächlichen Ticker der Aktie  
+🔗 [Finviz öffnen](https://finviz.com/quote.ashx?t=TICKER)  
 💵 **Letzter Kurs:** XX,XX USD  
 🎯 **Einstieg bis max.:** XX,XX USD  
 
@@ -77,15 +77,19 @@ Für jede Aktie:
 🧭 **Handlungsempfehlung:**  
 > Beobachten oder bei Pullback einsteigen. Volumen und Hype sprechen für kurzfristiges Momentum.
 
-🟨 *Achtung: Nicht alle Kriterien erfüllt – erhöhte Unsicherheit.*
+🟩 *Klick hier, um automatisch über deinen Trading-Bot zu kaufen:*  
+`https://trading-bot-c95d5.ondigitalocean.app/webhook`
 
----
+➡️ Sende per POST folgende JSON an die URL:
 
-📌 *Anzahl der Kandidaten heute: X*  
-🔍 *Analyse basiert ausschließlich auf Daten vom {datetime.datetime.now().strftime('%d. %B %Y')}*
-
-🚨 Hinweis: Diese Empfehlungen sind spekulativ. Handle auf eigene Verantwortung (DYOR).
-"""
+```json
+{
+  "symbol": "TICKER",
+  "action": "buy",
+  "strategy": "smartentry",
+  "timeframe": "1D",
+  "note": "🚀 SmartEntry aktiviert: Trade für TICKER bei letztem Schlusskurs via Slack-Buy-Button."
+}"""
     try:
         response = openai.chat.completions.create(
             model="gpt-4o",
