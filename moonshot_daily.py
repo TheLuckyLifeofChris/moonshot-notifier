@@ -155,7 +155,7 @@ def generate_moonshot_slack_message(moonshots: List[Dict]) -> str:
             f"\n💵 **Letzter Kurs:** {last_price:,.2f} USD  "
             f"\n🎯 **Einstieg bis max.:** {entry_price:,.2f} USD  "
             f"\n🔗 [Finviz öffnen]({finviz_url})\n"
-            f"\n{criteria_lines}"
+            f"{criteria_lines}"
             f"\n🧭 **Handlungsempfehlung:**  "
             f"\n{recommendation}"
             f"{warn}\n\n---\n"
