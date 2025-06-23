@@ -61,16 +61,6 @@ Für jede Aktie:
 
 🧭 **Handlungsempfehlung:**  
 > Beobachten oder bei Pullback einsteigen.
-
-🟩 *Klick hier, um automatisch über deinen Trading-Bot zu kaufen:*  
-```json
-{{
-  "symbol": "TICKER",
-  "action": "buy",
-  "strategy": "smartentry",
-  "timeframe": "1D",
-  "note": "🚀 SmartEntry aktiviert: Trade für TICKER bei letztem Schlusskurs via Slack-Buy-Button."
-}}
 """
     try:
         response = openai.chat.completions.create(
