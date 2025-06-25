@@ -21,9 +21,11 @@ Heute ist der {datetime.datetime.now().strftime('%d. %B %Y')}. Gib mir eine fikt
 Simuliere aktuelle Nachrichten, Kursmuster und Stimmungen so, wie ein Börsenanalyst es typischerweise einschätzen würde. Verwende reale Ticker und plausible Kursangaben. Hinweis: Diese Daten sind hypothetisch und dienen als Inspiration zur manuellen Analyse durch den Nutzer.
 
 🔎 Gib **nur Aktien aus**, bei denen mindestens **4 der folgenden 5 Hauptkriterien erfüllt** sind. Zusätzlich sollten möglichst viele Bonuskriterien erfüllt sein.
+📌 Nur Aktien, die auf der deutschen LS Exchange (Lang & Schwarz) gelistet sind und über Trade Republic typischerweise handelbar sind.
+Zeige alle Kursangaben bitte in Euro (EUR), so wie sie üblicherweise bei deutschen Brokern wie Trade Republic dargestellt werden. Die Werte können auf einem typischen EUR/USD-Kurs basieren.
 
 ### Hauptkriterien (mind. 4 erforderlich):
-1. Preis unter 20 USD (optimal: 2–15 USD)  
+1. Preis unter 20 EUR (optimal: 2–15 EUR)  
 2. Technisches Kaufsignal (EMA-Crossover, Breakout, starkes Volumen)  
 3. Positiver Social Media/Reddit-Hype (letzte 48 h)  
 4. Spekulatives Momentum (letzte 3 Tage)  
@@ -47,11 +49,11 @@ Für jede Aktie:
 
 🔹 **Name + Ticker**  
 🔗 [Finviz öffnen](https://finviz.com/quote.ashx?t=TICKER)  
-💵 **Letzter Kurs:** XX,XX USD  
-🎯 **Einstieg bis max.:** XX,XX USD  
+💵 **Letzter Kurs:** XX,XX EUR  
+🎯 **Einstieg bis max.:** XX,XX EUR  
 
 📊 **Erfüllte Kriterien:**  
-✅ Preis unter 20 USD  
+✅ Preis unter 20 EUR  
 ✅ Technisches Kaufsignal  
 ✅ Social Media/Reddit-Hype  
 ✅ Relevanz zu Trendthema: AI  
