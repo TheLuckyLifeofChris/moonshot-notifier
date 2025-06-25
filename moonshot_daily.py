@@ -22,7 +22,7 @@ Simuliere aktuelle Nachrichten, Kursmuster und Stimmungen so, wie ein Börsenana
 
 🔎 Gib **nur Aktien aus**, bei denen mindestens **4 der folgenden 5 Hauptkriterien erfüllt** sind. Zusätzlich sollten möglichst viele Bonuskriterien erfüllt sein.
 📌 Nur Aktien, die auf der deutschen LS Exchange (Lang & Schwarz) gelistet sind und über Trade Republic typischerweise handelbar sind.
-Zeige alle Kursangaben bitte in Euro (EUR), so wie sie üblicherweise bei deutschen Brokern wie Trade Republic dargestellt werden. Die Werte können auf einem typischen EUR/USD-Kurs basieren.
+💶 Gib alle Kurse in EUR (nicht USD) an. Verwende einen EUR/USD-Kurs von ca. 0,93.
 
 ### Hauptkriterien (mind. 4 erforderlich):
 1. Preis unter 20 EUR (optimal: 2–15 EUR)  
